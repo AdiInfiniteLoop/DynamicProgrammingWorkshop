@@ -26,12 +26,57 @@ const ll MOD = 1e9 + 7;
 const ll INF = 1e9;
 const ld EPS = 1e-9;
 
-int rec(int n) {
+int queen[10];
+
+int valid(int prevLevels, int currentColumn) {
+    /* Check if two elements in 2D are interacting in O(1)!!!!! */
+    fr(row,0, prevLevels) {
+        if(queen[row] == currentColumn || abs(row - prevLevels) == abs(currentColumn - queen[row]) ) return false;
+    }
+    return true;
+}
+int rec(int level, int &n) {//return-> no of ways to place from level to [0...n - 1]
+    //Pruning
+    //**Level = Rows till n - 1 idx   L
+    // **Choice: Place or Not  C
+    //Base Case
+    if(n == level) return 1;//successfully reached
+     
+     //Compute
+     int ans(0);
+     fr(i, 0, n-1) {
+        //Go column wise, to check in which col at that row we can place it.
+        //**Check   C
+        if(valid(level, i)) {
+            //Place the Queen
+            queen[level] = i;//i means column here
+            //**Move  M
+            ans += rec(level + 1, n);
+            //Not necessary here, But Backtracking we gotta revert back the common structure to its original value
+            queen[level] = -1;
+
+        }
+     }
+     return ans;
 
 }
 int main() {
     int n;
     cin >> n;
-    cout << rec(n);
+    memset(queen, -1 ,sizeof(queen));
+    cout << rec(0, n);
 
 }
+
+
+
+/*
+1.Levels === Rows(Go Downwards)
+2.Choice: Whether we can place the queen there or not.
+3.Check: Same column + O(1)! Diagonal Check
+4.Place and Move: (In exploration Cases of recursion(Backtracking) -> Good practice to revert back to original state)
+
+-------------------------------------------------------
+queen[] is used to see in each row at whcih col is the  queen place previously
+row - to - column Mapping
+ */
