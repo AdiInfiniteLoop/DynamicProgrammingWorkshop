@@ -28,6 +28,8 @@ const ld EPS = 1e-9;
 
 int queen[10];
 
+ 
+
 int valid(int prevLevels, int currentColumn) {
     /* Check if two elements in 2D are interacting in O(1)!!!!! */
     fr(row,0, prevLevels) {
@@ -79,4 +81,5 @@ int main() {
 -------------------------------------------------------
 queen[] is used to see in each row at whcih col is the  queen place previously
 row - to - column Mapping
+
  */

@@ -27,14 +27,76 @@ const ll INF = 1e9;
 const ld EPS = 1e-9;
 
 
+
+int taken[1001][1001][1001];
+
+// bool check(int level, vi(p(int, int)) &v, int x, int k) {
+//     int time(0);
+//     int item(0);
+//     fr(i, 0,level) {
+//         if(taken[i]) {
+//             time += v[i].first;
+//             item++;
+//         }
+//     }
+
+//     time += v[level].first;
+//     item++;
+//     if(time <= x && item <= k) return 1;
+//     return false;
+// }
+
+// int rec(int level, vi(p(int, int)) &v, int x, int k) {
+//     if(level == sza(v)) {
+//         return 0;
+//      }
+
+//     //Choice: Taken or Not Take
+//     //Don't take
+//     int ans = rec(level + 1, v, x, k);
+//     //Takecl
+    
+//     if(check(level, v, x, k)) {
+//         //Place
+//         taken[level] = 1;
+//         //Move
+//         rec(level + 1, v,x,k);
+//         //Revert
+//         taken[level] = 0;
+//     }
+
+//     return ans;
+// }
+
+
+
+int rec(int level, vi(p(int, int))&v, int t, int k ) {
+    
+    //Base Case
+    if(level >= sza(v) || t <= 0 || k <= 0) return 0;
+    if(taken[level][t][k] != -1) return taken[level][t][k];
+
+    //Level: means in which index here am I.
+
+    //Choice: can pick or not
+    //Check: See if can be picked
+
+     if(v[level].first > t) {
+        return taken[level][t][k]  = rec(level + 1, v, t, k);
+    }
+    //Move
+    return taken[level][t][k] = max( v[level].second + rec(level + 1, v, t - v[level].first, k - 1), rec(level + 1, v, t ,k));
+}
+
 int main() {
     int n;
     cin >> n;
     vi(p(int, int)) v;
+    memset(taken, -1, sizeof(taken));
     fr(i,0,n-1) {
         int x,k;
         cin >> x >> k;
         v.emplace_back(x,k);
     }
-
+    cout<< rec(0, v, 2, 2) <<endl;
 }

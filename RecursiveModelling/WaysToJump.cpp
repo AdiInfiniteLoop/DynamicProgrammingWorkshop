@@ -27,6 +27,9 @@ const ll INF = 1e9;
 const ld EPS = 1e-9;
 
 
+
+int dp[10001];
+
 /* Design: level, choice, check , move
 ----Basic Template----
     int rec(int level) {
@@ -48,20 +51,28 @@ int rec2 (int level, int &n, int canJumpMax) {
     //canJumpMax means what is the maximum jump we can make
     if(level == n) return 1;
     else if(level > n) return 0;
+    if(dp[level] != -1) return dp[level];
     //Level
     int ans(0);
     fr(i,1,canJumpMax) {
     //Choice: Pick or Not(depends on Check)
-        ans += rec2(level + i, n, canJumpMax);
+        ans += rec2(level + i, n, canJumpMax);     
     }
 
-    return ans;
+    return dp[level] = ans;
 }
 
+
+/* dp[level] is enough to give enough data about the state  */
 
 int main() {
     int n;
     cin >> n;
     cout << rec(1, n) << endl;
     cout << rec2(1, n,3);
+
+    memset(dp, 01, sizeof(dp));
 }
+
+
+/* Recursion time comp0lexity is 3^N But wwhen memoizing the recursive calls take O(1) time. Therefore, the dp T.C is O(N )*/
